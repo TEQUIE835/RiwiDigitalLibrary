@@ -1,0 +1,225 @@
+@model IEnumerable<Book>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmarEliminar(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "No podrás revertir esta acción",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/Book/Delete/' + id;
+                }
+            });
+        }
+
+    </script>
+    <script>
+        async function editarLibro(id) {
+            try {
+                const response = await fetch(`/Book/GetById/${id}`);
+                if (!response.ok) {
+                    Swal.fire('Error', 'No se pudo obtener el libro.', 'error');
+                    return;
+                }
+
+                const book = await response.json();
+    Swal.fire({
+        title: 'Editar libro',
+        html: `
+            <div class="mt-3 d-flex flex-column">
+                <label for="">Nombre</label>
+                <input type="text" id="Name" class="form-control" placeholder="Nombre del libro" value="${book.name}">
+            </div>
+            <div class="mt-3 d-flex flex-column">
+                <label for="">Autor</label>
+                <input type="text" id="Author" class="form-control" placeholder="Autor" value="${book.author}">
+            </div>
+            <div class="mt-3 d-flex flex-column">
+                <label for="">Código</label>
+                <input type="text" id="Code" class="form-control" placeholder="Código" value="${book.code}">
+            </div>
+            <div class="mt-3 d-flex flex-column">
+                <label for="">Copias</label>
+                <input type="number" id="Copies" class="form-control" placeholder="Copias disponibles" value="${book.copies}">
+            </div>
+            <div class="mt-3 d-flex flex-column">
+                <label for="">Género</label>
+                <input type="text" id="Gender" class="form-control" placeholder="Género literario" value="${book.gender}">
+            </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Guardar',
+        cancelButtonText: 'Cancelar',
+        focusConfirm: false,
+        preConfirm: () => {
+            const Name = document.getElementById('Name').value.trim();
+            const Author = document.getElementById('Author').value.trim();
+            const Code = document.getElementById('Code').value.trim();
+            const Copies = document.getElementById('Copies').value.trim();
+            const Gender = document.getElementById('Gender').value.trim();
+
+            
+            if (!Name || !Author || !Code || !Copies || !Gender) {
+                Swal.showValidationMessage('Por favor completa todos los campos');
+                return false;
+            }
+
+            return { Name, Author, Code, Copies, Gender };
+        }
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+            const updatedBook = {
+                Id: id,
+                Name: result.value.Name,
+                Author: result.value.Author,
+                Code: parseInt(result.value.Code),
+                Copies: parseInt(result.value.Copies),
+                Gender: result.value.Gender
+            };
+            
+            if (result.isConfirmed) {
+                const res = await fetch(`/Book/Update`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedBook)
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    Swal.fire('Éxito', data.message, 'success').then(() => location.reload());
+                } else {
+                    Swal.fire('Error', data.message, 'error');
+                }
+            }
+
+            
+        }
+        })}catch (error) {
+            console.error(error);
+            Swal.fire('Error', 'Ocurrió un error al editar el libro.', 'error');
+        }}
+        
+    
+</script>
+    <script>
+        @if (TempData["DeleteSuccess"] != null)
+        {
+            <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Hecho!',
+                    text: '@TempData["DeleteSuccess"]'
+                });
+            </text>
+        } else if (TempData["DeleteError"] != null)
+        {
+            <text>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '@TempData["DeleteError"]'
+                });
+            </text>
+        } else if (TempData["CreateSuccess"] != null)
+        {
+            <text>
+                Swal.fire({
+                    icon : 'success',
+                    title : 'Exito!',
+                    text : '@TempData["CreateSuccess"]'
+                })
+            </text>
+        }else if (TempData["CreateError"] != null)
+        {
+            <text>
+                Swal.fire({
+                    icon : 'error',
+                    title : 'Error',
+                    text : '@TempData["CreateError"]'
+                })
+            </text>
+        }
+    </script>
+}
+
+
+<h1>Lista de libros</h1>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="AddBook">
+                    <div class="mt-3 d-flex flex-column">
+                        <label for="">Nombre</label>
+                        <input type="text" class="form-control" name="Name" required>
+                    </div>
+                    <div class="mt-3 d-flex flex-column">
+                        <label for="">Autor</label>
+                        <input type="text" class="form-control" name="Author" required>
+                    </div>
+                    <div class="mt-3 d-flex flex-column">
+                        <label for="">Codigo</label>
+                        <input type="text" class="form-control" name="Code" required>
+                    </div>
+                    <div class="mt-3 d-flex flex-column">
+                        <label for="">Copias</label>
+                        <input type="text" class="form-control" name="Copies" required>
+                    </div>
+                    <div class="mt-3 d-flex flex-column">
+                        <label for="">Genero</label>
+                        <input type="text" class="form-control" name="Gender" required>
+                    </div>
+                    <hr>
+                    <button type="submit" class="btn btn-primary w-100">Guardar información</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-9">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Autor</th>
+                <th>Codigo</th>
+                <th>Genero</th>
+                <th>Copias disponibles</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Author</td>
+                    <td>@item.Code</td>
+                    <td>@item.Gender</td>
+                    <td>@item.Copies</td>
+                    <td>
+                        <a class="btn btn-primary" onclick="editarLibro(@item.Id)">Editar</a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger"  onclick="confirmarEliminar(@item.Id)">Delete</button>
+                    </td>
+                    <td>
+                        <a class="btn btn-warning"  asp-controller="Loan" asp-action="ByBook" asp-route-id="@item.Id">Prestamos </a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

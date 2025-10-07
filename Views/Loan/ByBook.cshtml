@@ -1,0 +1,41 @@
+@model IEnumerable<Loan>;
+
+
+<h2>Prestamos del libro</h2>
+
+
+<div class="row">
+    <div class="col-md-9">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Libro</th>
+                <th>Fecha prestamo</th>
+                <th>Fecha devolucion</th>
+                <th>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Client.Name</td>
+                    <td>@item.Book.Name</td>
+                    <td>@item.LoanDate</td>
+                    <td>@item.ReturnDate</td>
+                    @if (item.Returned == true)
+                    {
+                        <td>Devuelto</td>
+                    } else if (item.Returned == false) 
+                    {
+                        <td>Pendiente</td>
+                    }
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
