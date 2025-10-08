@@ -2939,11 +2939,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/tequie/RiderProjects/DigitalLibrary/DigitalLibrary.csproj",
+      "projectUniqueName": "/home/tequie/Documents/GitHub/RiwiDigitalLibrary/DigitalLibrary.csproj",
       "projectName": "DigitalLibrary",
-      "projectPath": "/home/tequie/RiderProjects/DigitalLibrary/DigitalLibrary.csproj",
+      "projectPath": "/home/tequie/Documents/GitHub/RiwiDigitalLibrary/DigitalLibrary.csproj",
       "packagesPath": "/home/tequie/.nuget/packages/",
-      "outputPath": "/home/tequie/RiderProjects/DigitalLibrary/obj/",
+      "outputPath": "/home/tequie/Documents/GitHub/RiwiDigitalLibrary/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/tequie/.nuget/NuGet/NuGet.Config"

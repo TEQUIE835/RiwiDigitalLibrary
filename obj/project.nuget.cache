@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "pCYhDs9uOCI=",
+  "dgSpecHash": "b3U1I6XvYOg=",
   "success": true,
-  "projectFilePath": "/home/tequie/RiderProjects/DigitalLibrary/DigitalLibrary.csproj",
+  "projectFilePath": "/home/tequie/Documents/GitHub/RiwiDigitalLibrary/DigitalLibrary.csproj",
   "expectedPackageFiles": [
     "/home/tequie/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/home/tequie/.nuget/packages/microsoft.bcl.asyncinterfaces/7.0.0/microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",

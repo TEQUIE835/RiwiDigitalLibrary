@@ -100,7 +100,7 @@
                     </div>
                     <div class="mt-3 d-flex flex-column">
                         <label for="">Fecha Devolucion</label>
-                        <input type="date" class="form-control" name="ReturnDate" required>
+                        <input type="date" class="form-control" name="ReturnDate" value="@DateTime.Now.AddDays(30).ToString("yyy-MM-dd")" required>
                     </div>
                     <hr>
                     <button type="submit" class="btn btn-primary w-100">Guardar información</button>
